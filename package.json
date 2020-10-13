@@ -1,0 +1,31 @@
+{
+  "name": "discordbotcli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "bin": {
+    "discordbot": "./bin/main.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Majunga/discordbotcli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Majunga/discordbotcli/issues"
+  },
+  "homepage": "https://github.com/Majunga/discordbotcli#readme",
+  "dependencies": {
+    "commander": "^6.1.0",
+    "discord.js": "^12.3.1"
+  },
+  "devDependencies": {
+    "jest": "^26.5.3",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
+  }
+}
