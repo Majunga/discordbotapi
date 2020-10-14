@@ -16,15 +16,9 @@ export class Discord {
   public Guilds = async() => {
     await this._loginPromise
 
-    const cachedGuilds = this._client.guilds.cache.map(g => g.id)
+    const cachedGuilds = this._client.guilds.cache.map(g => { return { guildId: g.id, name: g.name } })
 
-    const guilds = []
-    for(const guildId of cachedGuilds){
-      const guild = await this._client.guilds.fetch(guildId, false)
-      guilds.push(guild)
-    }
-
-    return guilds
+    return cachedGuilds
   }
 
   public Message = async (guildId:string, channelId:string, message:string) => {

@@ -30,16 +30,8 @@ app.get('/guilds', async (req, res) => {
 
     const guildCollection = await client.Guilds()
 
-    const guilds = []
-    for (const guild of guildCollection) {
-      guilds.push({
-        guildId: guild.id,
-        name: guild.name
-      })
-    }
-
-    console.log(guilds)
-    res.json(guilds)
+    console.log(guildCollection)
+    res.json(guildCollection)
   }
   catch (ex) {
     console.error(ex)
