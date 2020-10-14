@@ -2,9 +2,10 @@ import * as express from 'express'
 import * as bodyParser from 'body-parser'
 import { Discord } from './Discord'
 import { Check } from './Check'
+import { getInstance, disposeClient } from './DiscordFactory'
 var cors = require('cors')
 
-
+const discords = []
 
 const app = express.default()
 
@@ -25,7 +26,7 @@ app.get('/guilds', async (req, res) => {
       return res.sendStatus(401)
     }
 
-    client = new Discord(token as string)
+    client = getInstance(token as string)
 
     const guildCollection = await client.Guilds()
 
@@ -39,16 +40,11 @@ app.get('/guilds', async (req, res) => {
 
     console.log(guilds)
     res.json(guilds)
-
-    client.dispose()
-
   }
   catch (ex) {
     console.error(ex)
     res.sendStatus(500)
   }
-
-  client?.dispose()
 })
 
 app.post('/joinchannel', async (req, res) => {
@@ -70,8 +66,6 @@ app.post('/joinchannel', async (req, res) => {
     console.error(ex)
     res.sendStatus(500)
   }
-
-  client?.dispose()
 })
 
 app.post('/message', async (req, res) => {
@@ -94,8 +88,6 @@ app.post('/message', async (req, res) => {
     console.error(ex)
     res.sendStatus(500)
   }
-
-  client?.dispose()
 })
 
 
@@ -120,9 +112,24 @@ app.post('/playmusic', async (req, res) => {
   catch (ex) {
     console.error(ex)
     res.sendStatus(500)
-    client?.dispose()
   }
+})
 
+app.post('/logout', async (req, res) => {
+  try {
+    const token = req.header('authorization')
+    if (Check.isNullOrWhitespace(token)) {
+      return res.sendStatus(401)
+    }
+
+   disposeClient(token as string)
+
+    res.sendStatus(200)
+  }
+  catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
 })
 
 app.listen(port, () => {
