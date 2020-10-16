@@ -1,5 +1,5 @@
 import { Discord } from "./Discord"
-import { Check } from "./Check"
+import { isDefined } from "./Check"
 
 
 class DiscordItem {
@@ -18,7 +18,7 @@ let discords:DiscordItem[] = []
 const getInstance = (token:string):Discord => {
   const discordFactory = discords.find(d => d.Token === token)
 
-  if(Check.isDefined(discordFactory) === false){
+  if(isDefined(discordFactory) === false){
     return (discordFactory as DiscordItem).DiscordInstance
   }
 
