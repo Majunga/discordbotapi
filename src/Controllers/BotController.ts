@@ -32,4 +32,13 @@ export class BotController {
 
     return res.sendStatus(isDefined(existingBot) ? 200 : 201)
   }
+  
+  public delete = async (req: Request<any>, res: Response<any>) => {
+    const clientId = req.body.clientId
+
+    await this._botRepo.delete(clientId)
+
+
+    return res.sendStatus(200)
+  }
 }

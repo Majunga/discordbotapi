@@ -47,6 +47,16 @@ app.post("/bots", async (req, res) => {
   }
 })
 
+app.delete("/bots", async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new BotController(db).delete(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+
 app.get('/guilds', async (req, res) => {
   let client = undefined
   try {

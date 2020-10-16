@@ -18,7 +18,7 @@ export class BaseRepo {
     }
   }
 
-  public get = async (id: string) => {
+  public get = async (id: any) => {
 
     try {
       return await this.Db.findOne({ [this._idName]: id })
@@ -38,6 +38,17 @@ export class BaseRepo {
         upsert: true
       })
     } catch (ex) {
+      console.error(ex)
+    }
+  }
+
+  public delete = async (id: any) => {
+    const query = { [this._idName]: id }
+
+    try {
+      await this.Db.findOneAndDelete(query)
+    }
+    catch(ex) {
       console.error(ex)
     }
   }
