@@ -7,6 +7,7 @@ import { BotController } from './Controllers/BotController'
 import { checkIsDefined, isNullOrWhitespace } from './Check'
 import * as env from 'dotenv'
 import { GuildController } from './Controllers/GuildController'
+import { SoundclipController } from './Controllers/SoundclipController'
 env.config()
 
 var cors = require('cors')
@@ -92,6 +93,46 @@ app.route("/guilds")
   try {
     const db = await CreateDb()
     return new GuildController(db).delete(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+
+app.route('/soundclips/search')
+  .get(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new SoundclipController(db).search(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+
+app.route("/soundclips")
+.get(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new SoundclipController(db).get(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+.post(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new SoundclipController(db).post(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+.delete(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new SoundclipController(db).delete(req, res)
   } catch (ex) {
     console.error(ex)
     res.sendStatus(500)

@@ -12,13 +12,17 @@ export class BotController {
 
   public get = async (req: Request<any>, res: Response<any>) => {
     const clientId = req.query.clientId
+    console.debug('get bot', clientId)
 
     if (isDefined(clientId) === false) {
       const clients = await this._botRepo.getAll()
+      console.debug('get all bots', clients)
+
       return res.send(clients)
     }
 
     const client = await this._botRepo.get(clientId)
+    console.debug('get all bot', client)
     return res.send(client)
   }
 
