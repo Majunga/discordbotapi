@@ -9,9 +9,9 @@ export class BaseRepo {
     this._idName = idName
   }
 
-  public getAll = async () => {
+  public getAll = async (query?:object | undefined) => {
     try {
-      const records = await this.Db.find().toArray()
+      const records = await this.Db.find(query).toArray()
       return records
     } catch (ex) {
       console.error(ex)

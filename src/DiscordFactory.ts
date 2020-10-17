@@ -18,7 +18,7 @@ let discords:DiscordItem[] = []
 const getInstance = (token:string):Discord => {
   const discordFactory = discords.find(d => d.Token === token)
 
-  if(isDefined(discordFactory) === false){
+  if(isDefined(discordFactory)){
     return (discordFactory as DiscordItem).DiscordInstance
   }
 

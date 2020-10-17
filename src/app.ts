@@ -6,6 +6,7 @@ import { MongoClient } from 'mongodb'
 import { BotController } from './Controllers/BotController'
 import { checkIsDefined, isNullOrWhitespace } from './Check'
 import * as env from 'dotenv'
+import { GuildController } from './Controllers/GuildController'
 env.config()
 
 var cors = require('cors')
@@ -20,10 +21,10 @@ if (true) {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-let client:MongoClient | null;
+let mongoClient:MongoClient | null;
 async function CreateDb() {
-  client = client ?? await MongoClient.connect(dbconnection, { useUnifiedTopology: true })
-  const db = client.db("discordapi")
+  mongoClient = mongoClient ?? await MongoClient.connect(dbconnection, { useUnifiedTopology: true })
+  const db = mongoClient.db("discordapi")
   return db
 }
 
@@ -57,7 +58,47 @@ app.delete("/bots", async (req, res) => {
   }
 })
 
-app.get('/guilds', async (req, res) => {
+app.route('/guilds/search')
+  .get(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new GuildController(db).search(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+
+app.route("/guilds")
+.get(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new GuildController(db).get(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+.post(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new GuildController(db).post(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+.delete(async (req, res) => {
+  try {
+    const db = await CreateDb()
+    return new GuildController(db).delete(req, res)
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
+
+app.get('/discord/guilds', async (req, res) => {
   let client = undefined
   try {
     const token = req.header('authorization')

@@ -11,7 +11,7 @@ export class BotController {
   }
 
   public get = async (req: Request<any>, res: Response<any>) => {
-    const clientId = req.body.clientId
+    const clientId = req.query.clientId
 
     if (isDefined(clientId) === false) {
       const clients = await this._botRepo.getAll()
@@ -34,11 +34,12 @@ export class BotController {
   }
   
   public delete = async (req: Request<any>, res: Response<any>) => {
-    const clientId = req.body.clientId
-
-    await this._botRepo.delete(clientId)
-
-
+    if(isDefined(req.query.clientId) === false){
+      return res.sendStatus(301)
+    }
+    
+    console.debug("delete bot", req.query.clientId)
+    await this._botRepo.delete(req.query.clientId)
     return res.sendStatus(200)
   }
 }
