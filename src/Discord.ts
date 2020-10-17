@@ -1,5 +1,5 @@
 import { Client, TextChannel, VoiceChannel } from 'discord.js'
-import { Check } from './Check'
+import { isNullOrWhitespace } from './Check'
 import * as ytdl from 'ytdl-core'
 
 export class Discord {
@@ -35,7 +35,7 @@ export class Discord {
 
     const membersCurrentChannel = member?.voice.channelID
 
-    if(Check.isNullOrWhitespace(membersCurrentChannel)){
+    if(isNullOrWhitespace(membersCurrentChannel)){
       return;
     }
 
