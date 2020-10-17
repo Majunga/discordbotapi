@@ -11,7 +11,7 @@ export class GuildController {
   }
 
   public search = async (req: Request<any>, res: Response<any>) => {
-    const query = req.body
+    const query = req.query
     console.debug('Search query', query)
     const result = await this._guildRepo.getAll(query)
     console.debug('Search result', result)
