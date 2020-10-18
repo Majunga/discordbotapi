@@ -4,7 +4,7 @@ import { Discord } from './Discord'
 import { getInstance, disposeClient } from './DiscordFactory'
 import { MongoClient } from 'mongodb'
 import { BotController } from './Controllers/BotController'
-import { checkIsDefined, isNullOrWhitespace } from './Check'
+import { checkIsDefined, isDefined, isNullOrWhitespace } from './Check'
 import * as env from 'dotenv'
 import { GuildController } from './Controllers/GuildController'
 import { SoundclipController } from './Controllers/SoundclipController'
@@ -28,6 +28,29 @@ async function CreateDb() {
   const db = mongoClient.db("discordapi")
   return db
 }
+
+app.post('/account/login', async (req, res) => {
+  try {
+    console.debug('Login Request')
+    if(isDefined(req.body)) {
+      if(req.body.username === "admin" && req.body.password === "pass"){
+        console.debug('Login authorised', req.body)
+        res.send({
+          token: Math.random().toString(36).substring(7),
+          loggedIn: true
+        })
+      } else {
+        console.debug('Login failed', req.body)
+        res.send({
+          loggedIn: false
+        })
+      }
+    }
+  } catch (ex) {
+    console.error(ex)
+    res.sendStatus(500)
+  }
+})
 
 app.get("/bots", async (req, res) => {
   try {
