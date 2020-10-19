@@ -19,7 +19,7 @@ export class SoundclipController {
   }
 
   public get = async (req: Request<any>, res: Response<any>) => {
-    const id = req.query.soundclipId
+    const id = req.params.soundclipId
     console.debug('get soundclip id', id)
 
     if (isDefined(id) === false) {
@@ -45,14 +45,15 @@ export class SoundclipController {
   }
   
   public delete = async (req: Request<any>, res: Response<any>) => {
-    if(isDefined(req.query.soundclipId) === false){
+    const id = req.params.soundclipId
+    if(isDefined(id) === false){
       return res.sendStatus(301)
     }
 
-    console.debug("delete soundclip", req.query.soundclipId)
+    console.debug("delete soundclip", id)
 
 
-    await this._soundclipRepo.delete(req.query.soundclipId)
+    await this._soundclipRepo.delete(id)
     return res.sendStatus(200)
   }
 }

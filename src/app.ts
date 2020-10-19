@@ -4,13 +4,16 @@ import { Discord } from './Discord'
 import { getInstance, disposeClient } from './DiscordFactory'
 import { MongoClient } from 'mongodb'
 import { BotController } from './Controllers/BotController'
-import { checkIsDefined, isNullOrWhitespace } from './Check'
+import { checkIsDefined, isDefined, isNullOrWhitespace } from './Check'
 import * as env from 'dotenv'
 import { GuildController } from './Controllers/GuildController'
 import { SoundclipController } from './Controllers/SoundclipController'
-env.config()
+import AuthenticationRequired from './Services/Authentication'
 
+env.config()
 var cors = require('cors')
+
+
 var dbconnection = checkIsDefined(process.env.dbconnection, "Db Connection should be defined");
 const port = checkIsDefined(process.env.port, "Port should be defined")
 
@@ -29,7 +32,8 @@ async function CreateDb() {
   return db
 }
 
-app.get("/bots", async (req, res) => {
+app.route("/bots/:clientId?")
+  .get(async (req, res) => {
   try {
     const db = await CreateDb()
     return new BotController(db).get(req, res)
@@ -38,8 +42,7 @@ app.get("/bots", async (req, res) => {
     res.sendStatus(500)
   }
 })
-
-app.post("/bots", async (req, res) => {
+  .post(async (req, res) => {
   try {
     const db = await CreateDb()
     return new BotController(db).post(req, res)
@@ -48,8 +51,7 @@ app.post("/bots", async (req, res) => {
     res.sendStatus(500)
   }
 })
-
-app.delete("/bots", async (req, res) => {
+.delete(async (req, res) => {
   try {
     const db = await CreateDb()
     return new BotController(db).delete(req, res)
@@ -70,7 +72,7 @@ app.route('/guilds/search')
   }
 })
 
-app.route("/guilds")
+app.route("/guilds/:guildId?")
 .get(async (req, res) => {
   try {
     const db = await CreateDb()
@@ -110,7 +112,7 @@ app.route('/soundclips/search')
   }
 })
 
-app.route("/soundclips")
+app.route("/soundclips/:soundclipId?")
 .get(async (req, res) => {
   try {
     const db = await CreateDb()
@@ -244,6 +246,7 @@ app.post('/logout', async (req, res) => {
   }
 })
 
+app.use(AuthenticationRequired)
 app.listen(port, () => {
   console.log(`Started on PORT ${port}`);
 })
