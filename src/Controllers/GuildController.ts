@@ -19,7 +19,7 @@ export class GuildController {
   }
 
   public get = async (req: Request<any>, res: Response<any>) => {
-    const guildId = req.query.guildId
+    const guildId = req.params.guildId
     console.debug('get guildId', guildId)
 
     if (isDefined(guildId) === false) {
@@ -45,14 +45,15 @@ export class GuildController {
   }
   
   public delete = async (req: Request<any>, res: Response<any>) => {
-    if(isDefined(req.query.guildId) === false){
+    const guildId = req.params.guildId
+    if(isDefined(guildId) === false){
       return res.sendStatus(301)
     }
 
-    console.debug("delete guild", req.query.guildId)
+    console.debug("delete guild", guildId)
 
 
-    await this._guildRepo.delete(req.query.guildId)
+    await this._guildRepo.delete(guildId)
     return res.sendStatus(200)
   }
 }
