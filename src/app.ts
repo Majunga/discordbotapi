@@ -125,5 +125,5 @@ app.post('/logout', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log("Started on PORT 3000");
+  console.log(`Started on PORT ${port}`);
 })

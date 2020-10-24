@@ -1,8 +1,5 @@
 FROM node:lts
 
-# make the 'this' folder the current working directory
-WORKDIR .
-
 RUN apt-get update && apt-get install ffmpeg -y
 
 # copy both 'package.json' and 'package-lock.json' (if available)
